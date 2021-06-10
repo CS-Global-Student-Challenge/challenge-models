@@ -1,6 +1,4 @@
 import pandas as pd
-from sklearn.metrics import accuracy_score
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestRegressor, AdaBoostClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
@@ -18,7 +16,7 @@ train_x, test_x, train_y, test_y = train_test_split(
     X, Y, train_size=0.8, test_size=0.2, random_state=0)
 
 # Model
-myModal = KNeighborsClassifier()
+myModal = AdaBoostClassifier()
 myModal.fit(train_x, train_y)
 predicated_y = myModal.predict(test_x)
 
@@ -30,10 +28,6 @@ print(
 output = pd.DataFrame({'job_id': test_x.index,
                        'failed': predicated_y})
 output.to_csv('model_complete_test.csv', index=False)
-
-score = accuracy_score(test_y, predicated_y)
-print(score)
-
 
 #### Output generates only 4000 rows #####
 #### We need atleast 10000 rows for submission #####
