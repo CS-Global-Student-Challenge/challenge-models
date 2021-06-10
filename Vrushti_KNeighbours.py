@@ -4,14 +4,14 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
 # Reading the file
-data = pd.read_csv('train_data.csv', index_col="job_id")
-dataTest = pd.read_csv("test_data_unlabeled.csv", index_col="job_id")
+train_data = pd.read_csv('train_data.csv', index_col="job_id")
+test_data = pd.read_csv("test_data_unlabeled.csv", index_col="job_id")
 
 # Define X and Y
-X = data[['memory_GB', 'network_log10_MBps',
+X = train_data[['memory_GB', 'network_log10_MBps',
           'local_IO_log10_MBps', 'NFS_IO_log10_MBps']]
-Y = data['failed']
-test_X = dataTest[['memory_GB', 'network_log10_MBps',
+Y = train_data['failed']
+test_X = test_data[['memory_GB', 'network_log10_MBps',
                    'local_IO_log10_MBps', 'NFS_IO_log10_MBps']]
 
 # Splitting the data for training and testing.
