@@ -28,3 +28,6 @@ print(
 output = pd.DataFrame({'job_id': test_x.index,
                        'failed': predicated_y})
 output.to_csv('model_complete_test.csv', index=False)
+
+#### Output generates only 4000 rows #####
+#### We need atleast 10000 rows for submission #####
