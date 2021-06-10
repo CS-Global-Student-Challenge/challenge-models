@@ -25,6 +25,6 @@ predicated_y = myModal.predict(test_x)
 print(
     mean_absolute_error(test_y, predicated_y))
 # Writing to csv
-output = pd.DataFrame({'job_d': test_x.index,
+output = pd.DataFrame({'job_id': test_x.index,
                        'failed': predicated_y})
-output.to_csv('submission.csv', index=False)
+output.to_csv('model_complete_test.csv', index=False)
