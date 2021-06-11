@@ -5,8 +5,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
 
 # Reading the file
-data = pd.read_csv('./train_data.csv', index_col="job_id")
-dataTest = pd.read_csv("./test_data_unlabeled.csv", index_col="job_id")
+train_data = pd.read_csv('./train_data.csv', index_col="job_id")
+test_data = pd.read_csv("./test_data_unlabeled.csv", index_col="job_id")
 
 # Defining X and Y
 X = train_data[['memory_GB', 'network_log10_MBps',
@@ -24,4 +24,3 @@ predicted_y = myModel.predict(test_X)
 output = pd.DataFrame({'job_id': test_X.index,
                        'failed': predicted_y})
 output.to_csv('model_complete_test.csv', index=False)
-
