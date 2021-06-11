@@ -14,19 +14,20 @@ Y = train_data['failed']
 test_X = test_data[['memory_GB', 'network_log10_MBps',
                    'local_IO_log10_MBps', 'NFS_IO_log10_MBps']]
 
-# Splitting the data for training and testing.
+# 0.054 - KNeighbours rms value
+# Splitting the data for training and testing
 train_x, test_x, train_y, test_y = train_test_split(
     X, Y, train_size=0.5, test_size=0.5, random_state=0)
 
 # Model
 k_model = KNeighborsClassifier(n_neighbors=4)
-k_model.fit(X, Y)
-predicted_y = k_model.predict(test_X)
+k_model.fit(train_x, train_y)
+predicted_y = k_model.predict(test_x)
 
 # Writing to csv
-output = pd.DataFrame({'job_id': test_X.index,
-                       'failed': predicted_y})
-output.to_csv('submission.csv', index=False)
+#output = pd.DataFrame({'job_id': test_X.index,
+                       #'failed': predicted_y})
+#output.to_csv('submission.csv', index=False)
 
 # Calculating accuracy
 score = accuracy_score(test_y, predicted_y)
