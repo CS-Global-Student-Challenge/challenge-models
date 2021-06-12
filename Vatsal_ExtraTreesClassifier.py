@@ -17,7 +17,7 @@ test_X = test_data[['memory_GB', 'network_log10_MBps',
                    'local_IO_log10_MBps', 'NFS_IO_log10_MBps']]
 
 # Model
-myModel = ExtraTreesClassifier(n_estimators=200, random_state=0,min_samples_split = 5)
+myModel = ExtraTreesClassifier(n_estimators=200, random_state=0)
 myModel.fit(X, Y)
 predicted_y = myModel.predict(test_X)
 
