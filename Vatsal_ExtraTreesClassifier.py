@@ -16,10 +16,17 @@ Y = train_data['failed']
 test_X = test_data[['memory_GB', 'network_log10_MBps',
                    'local_IO_log10_MBps', 'NFS_IO_log10_MBps']]
 
+train_x, test_x, train_y,test_y = train_test_split(X, Y, train_size=0.5, test_size=0.5, random_state=0)
+
 # Model
 myModel = ExtraTreesClassifier(n_estimators=200, random_state=0)
 myModel.fit(X, Y)
 predicted_y = myModel.predict(test_X)
+
+# Confusion Matrix
+from sklearn.metrics import confusion_matrix  
+cm = confusion_matrix(test_y, predicted_y)
+print(cm)
 
 # Writing to csv
 output = pd.DataFrame({'job_id': test_X.index,
