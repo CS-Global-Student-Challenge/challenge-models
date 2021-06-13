@@ -28,7 +28,15 @@ from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(test_y, predicted_y)
 print(cm)
 
+# Getting the Absolute Error.
+print(
+    mean_absolute_error(test_y, predicted_y))
+
 # Writing to csv
 output = pd.DataFrame({'job_id': test_X.index,
                        'failed': predicted_y})
 output.to_csv('model_complete_test.csv', index=False)
+
+#Accuracy Score
+score = accuracy_score(test_y, predicted_y)
+print(score)
