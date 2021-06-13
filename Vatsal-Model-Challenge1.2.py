@@ -32,9 +32,16 @@ myModel = ExtraTreesClassifier(n_estimators=200, random_state=0)
 myModel.fit(X, Y)
 predicted_y = myModel.predict(test_X)
 
+# Confusion Matrix
+from sklearn.metrics import confusion_matrix  
+cm = confusion_matrix(test_y, predicted_y)
+print(cm)
+
+#Absolute Error
 print(
     mean_absolute_error(test_y, predicted_y))
 
+#Accuracy Score
 score = accuracy_score(test_y, predicted_y)
 print(score)
 
