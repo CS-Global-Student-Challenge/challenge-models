@@ -37,12 +37,12 @@ from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(test_y, predicted_y)
 print(cm)
 
-#Absolute Error
+#Absolute Error (Higher == Better)
 print(
     mean_absolute_error(test_y, predicted_y))
 
-#Accuracy Score
-score = accuracy_score(test_y, predicted_y)
+#Accuracy Score 
+score = accuracy_score(test_y, predicted_y)       
 print(score)
 
 
@@ -50,3 +50,5 @@ print(score)
 output = pd.DataFrame({'job_id': test_X.index,
                         'failed': predicted_y})
 output.to_csv('model_abridged_test.csv', index=False)
+
+
