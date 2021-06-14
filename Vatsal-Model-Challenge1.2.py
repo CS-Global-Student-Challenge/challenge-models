@@ -38,6 +38,7 @@ cm = confusion_matrix(test_y, predicted_y)
 print(cm)
 
 #Absolute Error (Higher == Better)
+#Try to make it greater than 0.1495
 print(
     mean_absolute_error(test_y, predicted_y))
 
