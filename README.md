@@ -1,29 +1,84 @@
-# Challenge 1.1: Computer System Failure Data Analysis (Model Complete)
-With the growing scale of supercomputing systems , scientists are now able to solve challenging computing problems in a matter of seconds which would take hundreds of years on a personal computer. However, with increasing scale (and complexity thereof) grows the probability of application failure, either due to hardware or software errors. Such application failures not only delay scientific progress, but also leads to a tremendous amount of wasted resources, both in terms of time and energy consumption. If we are able to predict when an application would fail due to a system error or due to software bugs, preventive mechanisms such as checkpointing can be initiated to save intermediate results, thereby, reducing the amount of wasted computation.
 
-This assignment deals with predicting failure of application executions (referred to as “job”) on Purdue ITaP’s central computing cluster. This is data that we have collected, collated, and analyzed as part of two projects from the National Science Foundation (NSF), one completed (“Computer System Failure Data Repository to Enable Data-Driven Dependability Research”, Project No. CNS-1513197) and one ongoing (“Open Computer System Usage Repository and Analytics Engine”, Project No. CNS-2016704).
+# Python Code for Model Complete
 
-For each job, we have data about the resources the job uses and whether the job succeeded or failed. The resources for which we have data are:
+The following is the readme file explaining how to run the code.
 
-* Memory
-* Network
-* Local IO
-* Network File System (NFS)
+## Importing Libraries
 
-We are releasing the training data from 20,000 jobs, which has about 8% failure data (this is referred to as the “positive class”). You will build Machine Learning models in Python to predict whether a job will fail or not, given the resource usage data. More details about the training and the test data are presented in the "Data" section.
+```
+import pandas as pd
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.decomposition import FastICA
+```
+The above-mentioned commands import necessary modules from pandas and sklearn libraries.
 
-The assignment, including the data, is available at the following Github repo:
-https://github.com/bagchi/application-failure-prediction
+## Reading the file
 
-There are two parts for this challenge problem with slightly different objectives:
-Challenge 1.1 and Challenge 1.2. You must complete both parts and upload your solutions separately.
+```
+train_data = pd.read_csv('./train_data.csv', index_col="job_id")
+test_data = pd.read_csv("./test_data_unlabeled.csv", index_col="job_id")
+```
+Read the train data and test data from the train_data.csv and test_data_unlabeled files respectively through the command ```pd.read_csv```.
 
-You will do the following steps for this Challenge Problem 1.1:
+## Defining X and Y
+```
+X = train_data[['memory_GB', 'network_log10_MBps',
+          'local_IO_log10_MBps', 'NFS_IO_log10_MBps']]  
+Y = train_data['failed']
+test_X = test_data[['memory_GB', 'network_log10_MBps',
+                   'local_IO_log10_MBps', 'NFS_IO_log10_MBps']]
 
-1. You will write code in Python. We have found the following packages to be useful for this task: pandas, sklearn, numpy.
-2. You will use the training dataset train_data.csv.
-3. You will create a Machine Learning model that achieves the highest balanced accuracy. Use all the features available in the dataset to train your model. We will call this “Model Complete”. You can use any algorithm of your choice.
-4. Give a short writeup explaining:
-  * What did you do for the Model Complete? Give the confusion matrix and the balanced accuracy that you obtained on the training data.
-  * Upload this writeup.
-5. Upload your Python code with a README that tells us how we can run your code.
+train_x, test_x, train_y,test_y = train_test_split(X, Y, train_size=0.5, test_size=0.5, random_state=0)
+```
+
+Define the variables X and Y by taking the resources provided in the training data. Split the train and test data using ```train_test_split``` into equal sizes of 0.5.
+
+## Feature Engineering
+```
+fica = FastICA(n_components=4, random_state=0)
+train_x = fica.fit_transform(train_x)
+test_x = fica.transform(test_x)
+```
+
+Transform the train and test data using FastICA, by taking all four components using feature engineering.  
+
+## Model : DecisionTreeClassifier 
+```
+myModel = DecisionTreeClassifier(max_depth=None, min_samples_split=2)
+myModel.fit(X, Y)
+predicted_y = myModel.predict(test_X)
+```
+
+Use the DecisionTreeClassifier with parameters max_depth=None, min_samples_split=2 to fit the values of X and Y, & predict the test data.
+
+## Confusion Matrix
+
+```
+from sklearn.metrics import confusion_matrix  
+cm = confusion_matrix(test_y, predicted_y)
+print(cm)
+```
+Use the sklearn module ```confusion_matrix``` to print the confusion matrix.
+
+## Balanced Accuracy
+
+```
+from sklearn.metrics import balanced_accuracy_score
+print(balanced_accuracy_score(test_y, predicted_y))
+```
+Use the sklearn module ```balanced_accuracy_score``` to print the balanced accuracy.
+
+## Writing to CSV (Output)
+
+```
+output = pd.DataFrame({'job_id': test_X.index,
+                       'failed': predicted_y})
+output.to_csv('model_complete_test.csv', index=False)
+```
+
+Use the pandas commands ```Dataframe``` and ```.to_csv``` to output the columns ```job_id``` and ```failed``` based on the model predictions to the file model_complete_test.csv.
+
+
